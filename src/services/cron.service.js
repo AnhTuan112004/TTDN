@@ -398,12 +398,8 @@ const runDailyAbsentCheck = async (targetDate = new Date()) => {
 
 /**
  * Quét định kỳ trong ngày (mỗi 5 phút):
-<<<<<<< HEAD
- * Tự động tìm các ca làm việc mà giảng viên chưa check-in và đã quá ngưỡng đi muộn (startMinutes + lateThresholdMinutes)
-=======
  * Tự động tìm các ca làm việc mà giảng viên/nhân viên chưa check-in và đã quá thời gian cho phép của ca đó
  * (startMinutes + shift.lateThresholdMinutes, với 15 phút là giá trị mặc định nếu ca chưa cấu hình)
->>>>>>> main
  * để tự động hủy lịch và ghi nhận vắng mặt (ABSENT) ngay trong ngày!
  */
 const scanAndMarkExpiredShiftsAbsent = async (targetDate = new Date()) => {
@@ -414,18 +410,6 @@ const scanAndMarkExpiredShiftsAbsent = async (targetDate = new Date()) => {
     const activeSchedules = await getTodayActiveSchedules(targetDate);
 
     for (const schedule of activeSchedules) {
-<<<<<<< HEAD
-      const shift = schedule.shiftId;
-      if (!shift || !shift.startTime) continue;
-
-      const shiftStartStr = schedule.startTime || shift.startTime;
-      const startMinutes = timeStringToMinutes(shiftStartStr);
-      const lateThreshold = shift.lateThresholdMinutes !== undefined ? shift.lateThresholdMinutes : 15;
-
-      // Nếu thời điểm hiện tại đã vượt quá giờ bắt đầu ca + ngưỡng cho phép đi muộn
-      if (currentMinutes > startMinutes + lateThreshold) {
-        await processScheduleAttendanceCheck(schedule, dayRange);
-=======
       try {
         const shift = schedule.shiftId;
         if (!shift || !shift.startTime) continue;
@@ -441,7 +425,6 @@ const scanAndMarkExpiredShiftsAbsent = async (targetDate = new Date()) => {
         }
       } catch (itemErr) {
         console.error(`[Cron Service] Lỗi khi xử lý lịch ${schedule._id}:`, itemErr.message);
->>>>>>> main
       }
     }
   } catch (error) {
@@ -459,22 +442,6 @@ const initCronJobs = () => {
     return;
   }
 
-<<<<<<< HEAD
-  // 1. Quét vắng mặt tự động mỗi 5 phút trong ngày theo giờ Việt Nam
-  // Tự động đánh vắng / hủy lịch ngay khi giảng viên đi muộn vượt quá ngưỡng của ca đó
-  const periodicAbsentCronExpression = '*/5 * * * *';
-  cron.schedule(
-    periodicAbsentCronExpression,
-    async () => {
-      await scanAndMarkExpiredShiftsAbsent();
-    },
-    {
-      scheduled: true,
-      timezone: 'Asia/Ho_Chi_Minh',
-    }
-  );
-
-=======
   // 0. Quét kiểm tra tức thì 1 lần sau khi server khởi động (sau 2 giây) để phát hiện ngay các ca đã quá hạn trong ngày
   setTimeout(async () => {
     try {
@@ -510,7 +477,6 @@ const initCronJobs = () => {
     }
   );
 
->>>>>>> main
   // 2. Lập lịch chạy lúc 23:59:00 mỗi ngày theo giờ Việt Nam để chốt danh sách & gửi mail tổng hợp
   const dailyAbsentCronExpression = '59 23 * * *';
   cron.schedule(
@@ -531,14 +497,8 @@ const initCronJobs = () => {
 module.exports = {
   getTodayActiveSchedules,
   runDailyAbsentCheck,
-<<<<<<< HEAD
-  scanAndMarkExpiredShiftsAbsent,
-  processScheduleAttendanceCheck,
-  isDeliverableEmail,
-=======
   processScheduleAttendanceCheck,
   scanAndMarkExpiredShiftsAbsent,
->>>>>>> main
   initCronJobs,
 };
 

@@ -92,13 +92,8 @@ const timeStringToMinutes = (timeStr) => {
 
 /**
  * Xác định khung giờ check-in hợp lệ cho ca làm việc:
-<<<<<<< HEAD
- * - Sớm bao nhiêu cũng được (lên tới 4 tiếng / 240 phút trước ca)
- * - Muộn tối đa 15 phút (startMinutes + 15)
-=======
  * - Sớm tối đa 30 phút trước giờ bắt đầu ca (startMinutes - 30)
  * - Muộn tối đa theo thời gian cho phép của ca (startMinutes + shift.lateThresholdMinutes)
->>>>>>> main
  * @param {Object} shift - Bản ghi ca làm việc (chứa startTime, endTime, lateThresholdMinutes)
  * @returns {Object|null} { startMinutes, endMinutes, windowStartMinutes, windowEndMinutes }
  */
@@ -110,11 +105,7 @@ const getTodayScheduleWindow = (shift) => {
   return {
     startMinutes,
     endMinutes,
-<<<<<<< HEAD
-    windowStartMinutes: Math.max(0, startMinutes - 240),
-=======
     windowStartMinutes: Math.max(0, startMinutes - 30),
->>>>>>> main
     windowEndMinutes: startMinutes + lateThreshold,
   };
 };
@@ -144,13 +135,8 @@ const calculateAttendanceStatus = (checkInTime, shiftConfig, date = new Date()) 
 /**
  * Đánh giá toàn diện lịch làm việc hôm nay để check-in theo nghiệp vụ:
  * 1. Sớm bao nhiêu cũng được (lên tới 240 phút / 4 tiếng trước giờ bắt đầu ca).
-<<<<<<< HEAD
- * 2. Cho phép muộn tối đa 15 phút (startMinutes + lateThreshold, mặc định 15p).
- * 3. Nếu muộn quá 15 phút: TỰ ĐỘNG HỦY LỊCH / GHI NHẬN VẮNG MẶT (ABSENT) và gửi email cảnh báo.
-=======
  * 2. Cho phép muộn trong ngưỡng thời gian cho phép của ca (startMinutes + shift.lateThresholdMinutes, mặc định 15p).
  * 3. Nếu muộn quá thời gian cho phép của ca đó: TỰ ĐỘNG HỦY LỊCH / GHI NHẬN VẮNG MẶT (ABSENT) và gửi email cảnh báo.
->>>>>>> main
  * 4. Nếu hôm nay không có lịch: Trả về trạng thái 'NO_SCHEDULE'.
  * 5. Nếu chưa đến giờ check-in ca tiếp theo: Trả về trạng thái 'TOO_EARLY'.
  * 
@@ -191,10 +177,7 @@ const evaluateUserScheduleForCheckIn = async (userId, specificShiftId = null) =>
   }
 
   const cancelledSchedules = [];
-<<<<<<< HEAD
-=======
   const absentSchedules = [];
->>>>>>> main
   let eligibleSchedule = null;
   let upcomingSchedule = null;
   let alreadyCheckedInLog = null;
@@ -229,9 +212,6 @@ const evaluateUserScheduleForCheckIn = async (userId, specificShiftId = null) =>
 
     if (existingLog) {
       if (existingLog.status === 'ABSENT' || existingLog.status === 'EXCUSED_ABSENCE') {
-<<<<<<< HEAD
-        // Ca này đã bị hủy/đánh vắng trước đó -> Bỏ qua, xét ca tiếp theo
-=======
         // Ca này đã bị hủy/đánh vắng trước đó -> Lưu vết để thông báo đúng, không báo nhầm "hoàn thành ca"
         absentSchedules.push({
           schedule: sch,
@@ -242,7 +222,6 @@ const evaluateUserScheduleForCheckIn = async (userId, specificShiftId = null) =>
           status: existingLog.status,
           log: existingLog,
         });
->>>>>>> main
         continue;
       }
       if (existingLog.checkOutTime) {
@@ -290,49 +269,31 @@ const evaluateUserScheduleForCheckIn = async (userId, specificShiftId = null) =>
           reason: `Quá hạn check-in (muộn quá ${lateThreshold} phút). Tự động hủy lịch và đánh vắng.`,
         },
         timestamp: new Date(),
-<<<<<<< HEAD
-      }).catch(() => {});
-=======
       }).catch(() => { });
->>>>>>> main
 
       // Tiếp tục vòng lặp để kiểm tra xem có ca tiếp theo trong ngày không
       continue;
     }
 
-<<<<<<< HEAD
-    // Tình huống B: Chưa đến giờ check-in (quá sớm, cách hơn 4 tiếng / 240 phút trước giờ ca)
-    const earlyLimitMinutes = Math.max(0, startMinutes - 240);
-    if (currentMinutes < earlyLimitMinutes) {
-      if (!upcomingSchedule) {
-=======
     // Tình huống B: Chưa đến giờ check-in (chỉ cho phép điểm danh trước giờ bắt đầu tối đa 30 phút)
     const earlyLimitMinutes = Math.max(0, startMinutes - 30);
     if (currentMinutes < earlyLimitMinutes) {
       if (!upcomingSchedule) {
         const openH = Math.floor(earlyLimitMinutes / 60).toString().padStart(2, '0');
         const openM = (earlyLimitMinutes % 60).toString().padStart(2, '0');
->>>>>>> main
         upcomingSchedule = {
           scheduleId: sch._id,
           shiftName: shift.name,
           startTime: shiftStartStr,
           endTime: shiftEndStr,
-<<<<<<< HEAD
-=======
           openCheckInTime: `${openH}:${openM}`,
->>>>>>> main
         };
       }
       continue;
     }
 
     // Tình huống C: Hợp lệ để check-in!
-<<<<<<< HEAD
-    // Sớm bao nhiêu cũng được (trong vòng 4 tiếng trước ca) hoặc muộn trong ngưỡng cho phép của ca
-=======
     // Trong vòng 30 phút trước ca hoặc muộn trong ngưỡng cho phép của ca
->>>>>>> main
     const status = currentMinutes > startMinutes ? 'LATE' : 'ON_TIME';
     const lateMinutes = status === 'LATE' ? currentMinutes - startMinutes : 0;
 
@@ -374,18 +335,11 @@ const evaluateUserScheduleForCheckIn = async (userId, specificShiftId = null) =>
     const c = cancelledSchedules[0];
     const thresholdText = c.lateThreshold ? `${c.lateThreshold} phút` : '15 phút';
     if (upcomingSchedule) {
-<<<<<<< HEAD
-      return {
-        canCheckIn: false,
-        status: 'SCHEDULE_CANCELLED_LATE',
-        message: `Ca làm việc ${c.shiftName} (${c.startTime}) đã quá hạn check-in (vượt ngưỡng cho phép đi muộn ${thresholdText}) và đã tự động bị hủy lịch / ghi nhận vắng mặt. Ca tiếp theo: ${upcomingSchedule.shiftName} (${upcomingSchedule.startTime}) chưa đến giờ check-in.`,
-=======
       const openTimeText = upcomingSchedule.openCheckInTime ? ` (Mở điểm danh từ ${upcomingSchedule.openCheckInTime})` : '';
       return {
         canCheckIn: false,
         status: 'SCHEDULE_CANCELLED_LATE',
         message: `Ca làm việc ${c.shiftName} (${c.startTime}) đã quá hạn check-in (vượt ngưỡng cho phép đi muộn ${thresholdText}) và đã tự động bị hủy lịch / ghi nhận vắng mặt. Ca tiếp theo: ${upcomingSchedule.shiftName} (${upcomingSchedule.startTime})${openTimeText} chưa đến giờ điểm danh.`,
->>>>>>> main
         cancelledSchedules,
         upcomingSchedule,
       };
@@ -400,24 +354,15 @@ const evaluateUserScheduleForCheckIn = async (userId, specificShiftId = null) =>
 
   // Nếu chưa đến giờ ca tiếp theo
   if (upcomingSchedule) {
-<<<<<<< HEAD
-    return {
-      canCheckIn: false,
-      status: 'TOO_EARLY',
-      message: `Chưa đến giờ check-in. Ca làm việc tiếp theo: ${upcomingSchedule.shiftName} bắt đầu lúc ${upcomingSchedule.startTime}.`,
-=======
     const openTimeText = upcomingSchedule.openCheckInTime ? ` (Mở điểm danh từ ${upcomingSchedule.openCheckInTime})` : '';
     return {
       canCheckIn: false,
       status: 'TOO_EARLY',
       message: `Chưa đến giờ điểm danh. Ca làm việc tiếp theo: ${upcomingSchedule.shiftName} (${upcomingSchedule.startTime} - ${upcomingSchedule.endTime})${openTimeText}. Bạn chỉ có thể điểm danh trước giờ bắt đầu tối đa 30 phút.`,
->>>>>>> main
       upcomingSchedule,
     };
   }
 
-<<<<<<< HEAD
-=======
   // Nếu có ca hôm nay đã bị ghi nhận vắng mặt hoặc nghỉ có phép, thông báo chính xác
   if (absentSchedules.length > 0) {
     const lastAbsent = absentSchedules[absentSchedules.length - 1];
@@ -432,7 +377,6 @@ const evaluateUserScheduleForCheckIn = async (userId, specificShiftId = null) =>
     };
   }
 
->>>>>>> main
   // Tất cả các ca hôm nay đã hoàn thành hoặc đã xử lý
   return {
     canCheckIn: false,
@@ -783,13 +727,6 @@ const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
-<<<<<<< HEAD
-const CAMPUS_CONFIG = {
-  name: process.env.CAMPUS_NAME || 'Khuôn viên Cơ sở chính - Trường Đại học',
-  lat: parseFloat(process.env.CAMPUS_LAT || '21.028511'),
-  lng: parseFloat(process.env.CAMPUS_LNG || '105.854167'),
-  radiusMeters: parseInt(process.env.CAMPUS_RADIUS_METERS || '500', 10), // Mặc định mở rộng 500m bao quát toàn bộ trường
-=======
 const CAMPUS_CONFIG_FILE = path.join(__dirname, '../config/campus_config.json');
 
 const loadPersistedCampusConfig = () => {
@@ -814,7 +751,6 @@ const loadPersistedCampusConfig = () => {
     lng: parseFloat(process.env.CAMPUS_LNG || '105.729905'),
     radiusMeters: parseInt(process.env.CAMPUS_RADIUS_METERS || '500', 10),
   };
->>>>>>> main
 };
 
 const savePersistedCampusConfig = (cfg) => {
@@ -877,13 +813,8 @@ const validateGeofence = (clientLocation, targetLocation = null, maxRadius = nul
       isInside: false,
       distanceMeters: Infinity,
       allowedRadius,
-<<<<<<< HEAD
-      effectiveRadius: allowedRadius,
-      target,
-=======
       effectiveRadius,
       target: campusTarget,
->>>>>>> main
       error: 'Không tìm thấy dữ liệu tọa độ GPS từ thiết bị.',
     };
   }
@@ -896,18 +827,6 @@ const validateGeofence = (clientLocation, targetLocation = null, maxRadius = nul
     Number(CAMPUS_CONFIG.lng)
   );
 
-<<<<<<< HEAD
-  // Bổ sung dung sai sai số thực tế từ phần cứng (accuracy: ±m, tối đa +100m)
-  const accuracyTolerance = Math.min(Number(clientLocation.accuracy) || 0, 100);
-  const effectiveRadius = allowedRadius + accuracyTolerance;
-
-  return {
-    isInside: distanceMeters <= effectiveRadius,
-    distanceMeters,
-    allowedRadius,
-    effectiveRadius,
-    target,
-=======
   if (campusDistance <= effectiveRadius) {
     return {
       isInside: true,
@@ -955,7 +874,6 @@ const validateGeofence = (clientLocation, targetLocation = null, maxRadius = nul
     allowedRadius,
     effectiveRadius,
     target: campusTarget,
->>>>>>> main
   };
 };
 

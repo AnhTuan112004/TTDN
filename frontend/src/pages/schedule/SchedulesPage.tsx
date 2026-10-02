@@ -996,42 +996,6 @@ export const SchedulesPage: React.FC = () => {
 
       {/* 4. Nội dung chính: Chế độ Bảng tuần (Weekly Grid View) */}
       {viewMode === 'grid' ? (
-<<<<<<< HEAD
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-          {/* Thanh Điều Hướng Tuần & Chọn Học Kỳ */}
-          <div className="bg-slate-50/90 border-b border-gray-200 px-4 py-2.5 flex flex-wrap items-center justify-between gap-3">
-            {/* Cụm Học kỳ & Tuần */}
-            <div className="flex flex-wrap items-center gap-2.5">
-              <div className="flex items-center gap-1.5">
-                <CalendarDays className="w-4 h-4 text-blue-600 shrink-0" />
-                <span className="text-xs font-bold text-gray-700">Học kỳ:</span>
-                <select
-                  value={selectedSemester}
-                  onChange={(e) => setSelectedSemester(e.target.value)}
-                  className="px-2 py-1 text-xs bg-white border border-gray-300 rounded-lg font-semibold text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-2xs"
-                >
-                  {SEMESTERS.map((sem) => (
-                    <option key={sem.id} value={sem.id}>
-                      {sem.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="h-4 w-px bg-gray-300 mx-1 hidden sm:block"></div>
-
-              <div className="flex items-center gap-1.5">
-                <button
-                  onClick={() => setCurrentWeekStart((prev) => new Date(prev.getTime() - 7 * 24 * 60 * 60 * 1000))}
-                  className="p-1 text-gray-600 hover:bg-white hover:shadow-xs rounded-lg border border-gray-200 transition"
-                  title="Tuần trước"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-
-                <div className="text-xs font-bold text-gray-900 bg-white px-2.5 py-1 rounded-lg border border-gray-200 shadow-2xs">
-                  <span>Tuần: {weekRangeText}</span>
-=======
         <>
           {/* ========================================================================= */}
           {/* GIAO DIỆN MOBILE TỐI ƯU (Hiển thị trên màn hình nhỏ < 768px)               */}
@@ -1095,28 +1059,17 @@ export const SchedulesPage: React.FC = () => {
                   <div className="text-xs font-bold text-gray-900 truncate">
                     Tuần: {weekRangeText}
                   </div>
->>>>>>> main
                 </div>
 
                 <button
                   onClick={() => setCurrentWeekStart((prev) => new Date(prev.getTime() + 7 * 24 * 60 * 60 * 1000))}
-<<<<<<< HEAD
-                  className="p-1 text-gray-600 hover:bg-white hover:shadow-xs rounded-lg border border-gray-200 transition"
-=======
                   className="p-1.5 text-gray-600 hover:bg-gray-100 rounded-lg border border-gray-200 shrink-0 active:scale-95 transition"
->>>>>>> main
                   title="Tuần sau"
                 >
                   <ChevronRight className="w-4 h-4" />
                 </button>
 
                 <button
-<<<<<<< HEAD
-                  onClick={() => setCurrentWeekStart(getMonday(new Date()))}
-                  className="text-xs font-bold text-blue-600 hover:bg-blue-50 px-2 py-1 rounded-lg transition"
-                >
-                  Tuần này
-=======
                   onClick={() => {
                     setCurrentWeekStart(getMonday(new Date()));
                     setMobileSelectedWeekday(new Date().getDay());
@@ -1124,13 +1077,10 @@ export const SchedulesPage: React.FC = () => {
                   className="px-2 py-1 text-[11px] font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition shrink-0"
                 >
                   Hôm nay
->>>>>>> main
                 </button>
               </div>
             </div>
 
-<<<<<<< HEAD
-=======
             {/* 2. Trường hợp A: Chế độ Mobile Timeline (Thẻ theo từng ngày) */}
             {mobileGridSubView === 'timeline' ? (
               <div className="space-y-3">
@@ -1588,7 +1538,6 @@ export const SchedulesPage: React.FC = () => {
               </div>
             </div>
 
->>>>>>> main
             {/* Cụm Tùy chọn hiển thị: Vừa màn hình / Cuộn rộng */}
             <div className="flex items-center gap-2">
               <div className="bg-gray-200/70 p-0.5 rounded-lg flex items-center text-xs">
@@ -1696,11 +1645,7 @@ export const SchedulesPage: React.FC = () => {
               <table
                 className={`w-full border-collapse ${
                   gridFitMode === 'fit' && displayedWeekDays.length > 1
-<<<<<<< HEAD
-                    ? 'table-fixed'
-=======
                     ? 'table-fixed min-w-[760px]'
->>>>>>> main
                     : 'min-w-[1100px]'
                 }`}
               >
@@ -1808,11 +1753,7 @@ export const SchedulesPage: React.FC = () => {
                                         onClick={() => setDetailSchedule(sch)}
                                         className={`p-2 rounded-lg border text-left shadow-2xs transition-all hover:shadow-md cursor-pointer ${theme.bg} ${theme.border} group/card relative overflow-hidden`}
                                       >
-<<<<<<< HEAD
-                                        {/* Phòng học & Badge */}
-=======
                                         {/* PhÃ²ng há»c & Badge */}
->>>>>>> main
                                         <div className="flex items-start justify-between gap-1 mb-1">
                                           <div className="flex items-center gap-1 text-[11px] font-bold text-gray-900 bg-white/90 px-1.5 py-0.5 rounded border border-gray-200/80 shadow-2xs min-w-0 max-w-[85%]">
                                             <MapPin className="w-2.5 h-2.5 text-red-500 shrink-0" />
@@ -1821,14 +1762,10 @@ export const SchedulesPage: React.FC = () => {
 
                                           {/* Thao tác Sửa / Xóa */}
                                           {canManage && (
-<<<<<<< HEAD
-                                            <div className="flex items-center gap-0.5 opacity-0 group-hover/card:opacity-100 transition-opacity bg-white/95 rounded border border-gray-200 px-1 py-0.5 shadow-2xs shrink-0">
-=======
                                             <div
                                               onClick={(e) => e.stopPropagation()}
                                               className="flex items-center gap-0.5 opacity-0 group-hover/card:opacity-100 transition-opacity bg-white/95 rounded border border-gray-200 px-1 py-0.5 shadow-2xs shrink-0"
                                             >
->>>>>>> main
                                               <button
                                                 onClick={(event) => {
                                                   event.stopPropagation();
@@ -1850,15 +1787,11 @@ export const SchedulesPage: React.FC = () => {
                                                 <Edit2 className="w-2.5 h-2.5" />
                                               </button>
                                               <button
-<<<<<<< HEAD
-                                                onClick={() => setDeleteTarget(sch)}
-=======
                                                 onClick={(event) => {
                                                   event.stopPropagation();
                                                   setDetailSchedule(null);
                                                   setDeleteTarget(sch);
                                                 }}
->>>>>>> main
                                                 className="p-0.5 text-gray-500 hover:text-red-600 rounded transition-colors"
                                                 title="Xóa lịch"
                                               >
@@ -1867,11 +1800,6 @@ export const SchedulesPage: React.FC = () => {
                                             </div>
                                           )}
                                         </div>
-<<<<<<< HEAD
-
-                                        {/* Giảng viên */}
-=======
->>>>>>> main
                                         <div className="text-[11px] font-bold text-gray-900 truncate leading-tight">
                                           {schUser ? schUser.fullName : 'Cán bộ / Giảng viên'}
                                         </div>
@@ -1895,20 +1823,11 @@ export const SchedulesPage: React.FC = () => {
                                           </div>
                                         )}
 
-<<<<<<< HEAD
-                                        {/* Khung giờ thực tế */}
-=======
                                         {/* Khung giờ thực tế & Badge Lặp */}
->>>>>>> main
                                         <div className="flex items-center justify-between text-[9px] text-gray-500 mt-1 pt-1 border-t border-gray-200/60 font-medium">
                                           <span className="truncate">
                                             {sch.startTime || shift.startTime} - {sch.endTime || shift.endTime}
                                           </span>
-<<<<<<< HEAD
-                                          {sch.isRecurring && (
-                                            <span className="text-blue-600 font-bold text-[8px] bg-blue-100/80 px-1 py-0.2 rounded shrink-0 ml-1">
-                                              Tuần
-=======
                                           {sch.isRecurring ? (
                                             <span className="text-blue-600 font-bold text-[8px] bg-blue-100/80 px-1 py-0.2 rounded shrink-0 ml-1">
                                               Cả kỳ
@@ -1916,7 +1835,6 @@ export const SchedulesPage: React.FC = () => {
                                           ) : (
                                             <span className="text-emerald-700 font-bold text-[8px] bg-emerald-100/80 px-1 py-0.2 rounded shrink-0 ml-1">
                                               Tuần này
->>>>>>> main
                                             </span>
                                           )}
                                         </div>

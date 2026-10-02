@@ -182,21 +182,6 @@ const checkIn = async (req, res, next) => {
         );
       }
 
-<<<<<<< HEAD
-      // Kiểm tra quá 15 phút -> Tự động hủy lịch và đánh vắng
-      const shiftStartStr = selectedSchedule.startTime || shift.startTime;
-      const startMinutes = timeStringToMinutes(shiftStartStr);
-      const lateThreshold = shift.lateThresholdMinutes !== undefined ? shift.lateThresholdMinutes : 15;
-      if (currentMinutes > startMinutes + lateThreshold) {
-        try {
-          const { processScheduleAttendanceCheck } = require('../services/cron.service');
-          if (processScheduleAttendanceCheck) {
-            await processScheduleAttendanceCheck(selectedSchedule, { startOfDay, endOfDay, dateStr: nowVN.toISOString().slice(0, 10) });
-          }
-        } catch (e) {}
-        return sendError(
-          res,
-=======
       // Kiểm tra thời gian điểm danh: Chỉ cho phép điểm danh trước giờ bắt đầu tối đa 30 phút
       const shiftStartStr = selectedSchedule.startTime || shift.startTime;
       const startMinutes = timeStringToMinutes(shiftStartStr);
@@ -229,7 +214,6 @@ const checkIn = async (req, res, next) => {
         } catch (e) { }
         return sendError(
           res,
->>>>>>> main
           `Ca làm việc ${shift.name} (${shiftStartStr}) đã quá hạn check-in (vượt ngưỡng cho phép đi muộn ${lateThreshold} phút) và đã tự động bị hủy lịch / ghi nhận vắng mặt.`,
           null,
           400,
@@ -1189,11 +1173,6 @@ const scanQRCode = async (req, res, next) => {
         400,
         'ATTENDANCE_OUT_OF_GEOFENCE'
       );
-<<<<<<< HEAD
-    }
-
-    // 3. Tự động xác định ca và lịch dạy hôm nay theo chuẩn nghiệp vụ (sớm bao nhiêu cũng được, muộn tối đa 15p)
-=======
     }
 
     // 3. Kiểm tra xem người dùng có ca đang mở (đã check-in hôm nay nhưng chưa check-out) hay không:
@@ -1300,7 +1279,6 @@ const scanQRCode = async (req, res, next) => {
     }
 
     // 4. Nếu chưa có ca mở hôm nay -> Thực hiện Check-in vào ca
->>>>>>> main
     const evalResult = await evaluateUserScheduleForCheckIn(userId);
     if (!evalResult.canCheckIn) {
       const statusCode = evalResult.status === 'ALREADY_CHECKED_IN' ? 409 : 400;
@@ -1394,11 +1372,7 @@ const getCampusLocationConfig = async (req, res, next) => {
  */
 const updateCampusLocationConfig = async (req, res, next) => {
   try {
-<<<<<<< HEAD
-    if (req.user?.role !== 'admin') {
-=======
     if (process.env.NODE_ENV === 'production' && req.user?.role !== 'admin') {
->>>>>>> main
       return sendError(res, 'Chỉ có Quản trị viên (Admin) mới có quyền cấu hình tọa độ khuôn viên trường.', null, 403);
     }
     const { name, lat, lng, radiusMeters } = req.body;
